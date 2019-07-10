@@ -2,6 +2,7 @@
 
 from flask import Flask, request, redirect, render_template
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import desc
 
 
 
@@ -39,7 +40,8 @@ def blog():
         blog = Blog.query.filter_by(id=id).first()
         return render_template('singleblog.html', title="Build-A-Blog", blog=blog)
     else:
-        blogs = Blog.query.all()
+        #blogs = Blog.query.all()
+        blogs = Blog.query.order_by(Blog.id.desc()).all()
         return render_template('blog.html', title="Build-A-Blog", blogs=blogs)
 
 
@@ -49,16 +51,24 @@ def newpost():
     if request.method == 'POST':
         blog_title = request.form['title']
         blog_content = request.form['body']
-        error = ''
-
-        if blog_content == '' or blog_title == '':
-            error = "Whoops! You're missing something. Please make sure you have a title and some content."
-
+        
+        blog_error=''
+        title_error=''
 
 
-        if error != '':
+        if blog_content == '':
+           blog_error = "Please make sure you have some content."
+
+        if blog_title == '':
+            title_error = "Title Required"
+
+        
+        
+
+
+        if blog_error != '' or title_error!='':
             return render_template('newpost.html', title="Build-A-Blog", 
-            blog_title=blog_title, blog_content=blog_content, error=error)
+            blog_title=blog_title, blog_content=blog_content, blog_error=blog_error, title_error=title_error)
 
         else:
             new_blog = Blog(blog_title, blog_content)
@@ -71,6 +81,13 @@ def newpost():
             return redirect("/blog?id=" + str(id))
     else:
         return render_template('newpost.html', title="Build-A-Blog - New Post")
+
+# @app.route('/blog')
+
+# def index():
+      
+#     blogs = Blog.query.order_by("Blog.id desc").all()
+#     return render_template('blog.html',title="Your Blog Name Here!", blogs=blogs)        
 
 
 if __name__ == '__main__':
