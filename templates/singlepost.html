@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+
+    <h1>Blog!</h1>
+
+    <hr/>
+
+      <div>
+
+        <a href="/blog?id={{blog.id}}"><h2>{{blog.title}}</h2></a>
+
+        <p>{{blog.body}}</p>
+
+        <div>written by
+
+          <a href="blog?user={{blog.owner}}">{{blog.owner}}</div></a>
+
+        <hr  />
+
+      </div>
+
+
+
+{% endblock %}

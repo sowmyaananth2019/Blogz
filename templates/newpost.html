@@ -1,48 +1,66 @@
-   
-
-   
-
 {% extends "base.html" %}
-
-
 
 {% block content %}
 
-    <h1>Build-A-Blog</h1>
+<h1>New Post</h1>
 
-    <form action='/newpost' method='post'>
 
-        <label>
 
-            <h3>Title</h3>
+<form method="post">
 
-            <input type="text" name='title' value='{{blog_title}}'/>
+    <table>
 
-        </label>
+        <tr>
 
-        <br>
-        <p class="error">{{title_error}}</p>
-        <br>
+            <td><label for="title"><strong>Blog Title:</strong></label></td>
 
-        <label>
+        </tr>
 
-            <h3>Content</h3>
 
-            <textarea name='body' rows='6' cols='50'>{{blog_content}}</textarea>
 
-        </label>
+        <tr>
 
-        <br>
+            <td>
 
-        <p class="error">{{blog_error}}</p>
+		        <input type="text" name="title"/>
 
-        <br>
+            </td>
 
-        <br>
+        </tr>
 
-        <input type="submit" value='New Post' />
+        
 
-    </form>
+        
+
+        
+
+        <tr>
+
+	        <td><label for="body"><strong>Blog Body:</strong></label></td>
+
+        </tr>
+
+            
+
+        <tr>
+
+            <td>
+
+                <textarea id="body" name="body"></textarea>
+
+            </td>
+
+        </tr>
+
+    </table>
+
+    
+
+    
+
+    <input type="submit" value="Add Entry"/>
+
+</form>
 
 
 
