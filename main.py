@@ -107,7 +107,7 @@ def validate_password(password, verify):
 @app.before_request
 
 def require_login():
-    allowed_routes = ['login', 'signup', 'blog', 'index']
+    allowed_routes = ['login', 'signup','blog' 'index']
     if request.endpoint not in allowed_routes and 'username' not in session:
         flash('You must be logged in', 'error')
         return redirect('/login')
@@ -185,42 +185,33 @@ def new_post():
 
 def blog():
 
-    # blogs = Blog.query.all()
+    if 'user_id' in request.args:
 
-    # owner = Blog.query.all()
+        user_id = request.args.get('user_id')
+               
+        user_blogs = Blog.query.filter_by(owner_id=user_id).all()
 
-    id = request.query_string
+        #user = User.query.filter_by(username=username).first()
 
-    if request.method == 'GET':
+        return render_template('singleuser.html', user_blogs=user_blogs)
 
-        if "id=" in str(id):
-            blogs = Blog.query.all()
 
-            owner = Blog.query.all()
 
-            return render_template('blog.html', blogs=blogs, owner=owner)
+    if request.args.get('id'):
 
-        else:
+        id = request.args.get('id')
 
-            if not id:
+        blog = Blog.query.get(id)
 
-                b = int(request.args.get('id'))
+        return render_template('singlepost.html', titlebase= 'Build A Blog!', blog = blog)
 
-                blog = Blog.query.get(b)
 
-                return render_template('singlepost.html', blog=blog)
+    else:
 
-            if "user=" in str(id):
+        blogs = Blog.query.all()
 
-                user = request.args.get('user')
-
-                owner = User.query.filter_by(username=user).first()
-
-                blogs = Blog.query.filter_by(owner_id=owner.id).all()
-
-                return render_template('singleuser.html', blogs=blogs)
-        return redirect('/')
-
+        return render_template('blog.html', titlebase = 'Build a Blog', blogs=blogs)
+    
 
 @app.route('/signup', methods=['GET', 'POST'])
 
